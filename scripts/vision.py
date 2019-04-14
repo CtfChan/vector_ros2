@@ -1,58 +1,80 @@
-# Copyright 2016 Open Source Robotics Foundation, Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
 import anki_vector
 
 import rclpy
 from rclpy.node import Node
 
+from sensor_msgs.msg import Image
+
 from std_msgs.msg import String
 
 
-class MinimalPublisher(Node):
+class Vision(Node):
+    def __init__(self, async_robot, proximity_publish_rate=10.0):
+        super().__init__('vision')
+        self.async_robot = async_robot
 
-    def __init__(self):
-        super().__init__('minimal_publisher')
-        self.publisher_ = self.create_publisher(String, 'topic')
-        timer_period = 0.5  # seconds
-        self.timer = self.create_timer(timer_period, self.timer_callback)
-        self.i = 0
+        #set up proximity callback
+        self.proximity_publisher = self.create_publisher(String, '/vector/proximity')
+        timer_period = 1.0/proximity_publish_rate
+        self.timer = self.create_timer(timer_period, self.proximity_callback)
 
-    def timer_callback(self):
-        msg = String()
-        msg.data = 'Hello World: %d' % self.i
-        self.publisher_.publish(msg)
-        self.get_logger().info('Publishing: "%s"' % msg.data)
-        self.i += 1
+        #TO DO set up image callback
+
+    def proximity_callback(self):
+        self.get_logger().info('Proximity Callback')
+        proximity_data = self.async_robot.proximity.last_sensor_reading
+        if proximity_data is not None:
+            print('Proximity distance: {0}, engine considers useful: {1}'.format(proximity_data.distance, proximity_data.is_valid))
+
 
 
 def main(args=None):
-    with anki_vector.Robot() as robot:
-        print("Say 'Hello World'...")
-        robot.say_text("Hello World")
+    #create connection to vector 
+    async_robot = anki_vector.AsyncRobot(enable_camera_feed=True)
+    async_robot.connect()
 
+    #initialize ros stuff
     rclpy.init(args=args)
+    vision = Vision(async_robot)
+    rclpy.spin(vision)
 
-    minimal_publisher = MinimalPublisher()
-
-    rclpy.spin(minimal_publisher)
-
-    # Destroy the node explicitly
-    # (optional - otherwise it will be done automatically
-    # when the garbage collector destroys the node object)
-    minimal_publisher.destroy_node()
+    #destroy node explicitly
+    vision.destroy_node()
     rclpy.shutdown()
 
 
 if __name__ == '__main__':
     main()
+
+
+
+# import rospy
+# import anki_vector
+# import cv_bridge
+# import numpy
+
+# from sensor_msgs.msg import Image
+
+# class Camera(object):
+#     def __init__(self, async_robot, publish_rate=10):
+#         self.async_robot = async_robot
+#         self.rate = rospy.Rate(publish_rate)
+#         self.image_publisher = rospy.Publisher("~camera", Image, queue_size=1)
+#         self.publish_camera_feed()
+
+#     def publish_camera_feed(self):
+#         bridge = cv_bridge.CvBridge()
+
+#         while not rospy.is_shutdown():
+#             image = bridge.cv2_to_imgmsg(numpy.asarray(self.async_robot.camera.latest_image), encoding="rgb8") # convert PIL.Image to ROS Image
+#             self.image_publisher.publish(image)
+
+#             # make sure to publish at required rate
+#             self.rate.sleep()
+
+# if __name__=="__main__":
+#     rospy.init_node("camera")
+#     async_robot = anki_vector.AsyncRobot(enable_camera_feed=True)
+#     async_robot.connect()
+#     Camera(async_robot)
+# rospy.spin()

@@ -1,6 +1,9 @@
 # ROS2 Driver for Anki Vector 
+This driver has only been tested on Ubuntu 18.04. This is still a work in progress.
 
-
+1. Setup Anki Vector for the SDK as in the documentation.
+2. Clone this repo
+3. Have fun
 
 
 <!-- ```console
