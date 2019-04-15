@@ -2,7 +2,7 @@ import anki_vector
 
 import rclpy
 from rclpy.node import Node
-from sensor_msgs.msg import Image
+from sensor_msgs.msg import Image 
 from std_msgs.msg import Float32
 
 
@@ -13,20 +13,21 @@ class Vision(Node):
 
         self.get_logger().info('Initializing vision node')
 
-
         #set up proximity callback
-        self.proximity_publisher = self.create_publisher(Float32, '/vector/proximity')
+        self.proximity_pub = self.create_publisher(Float32, '/vector/proximity')
         timer_period = 1.0/proximity_publish_rate
         self.timer = self.create_timer(timer_period, self.proximity_callback)
 
         #TO DO set up image callback
+        # self.image_publisher = self.create_publisher(Image, '/vector/image')
+
 
     def proximity_callback(self):
         proximity_data = self.async_robot.proximity.last_sensor_reading
         if proximity_data is not None:
             msg = Float32()
             msg.data = proximity_data.distance.distance_mm / 1000.0 #convert to meters
-            self.proximity_publisher.publish(msg)
+            self.proximity_pub.publish(msg)
 
 
 def main(args=None):

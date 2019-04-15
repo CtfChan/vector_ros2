@@ -24,7 +24,8 @@ setup(
     test_suite='test',
     entry_points={
         'console_scripts': [
-            'vision = scripts.vision:main'
+            'vision = scripts.vision:main',
+            'movement = scripts.movement:main'
         ],
     },
 )

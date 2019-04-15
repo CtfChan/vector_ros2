@@ -6,6 +6,10 @@ This driver has only been tested on Ubuntu 18.04. This is still a work in progre
 3. Have fun
 
 
+#testing movement
+$ ros2 topic pub -r 10 vector/cmd_vel geometry_msgs/Twist  '{linear:  {x: 0.1, y: 0.0, z: 0.0}, angular: {x: 0.0,y: 0.0,z: 0.0}}'
+
+
 <!-- ```console
 $ mkdir -p ~/ros2_ws/src && cd ~/ros2_ws/src
 $ git clone https://github.com/CtfChan/ros2_template_py.git
