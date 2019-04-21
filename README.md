@@ -6,8 +6,15 @@ This driver has only been tested on Ubuntu 18.04. This is still a work in progre
 3. Have fun
 
 
-#testing movement
+#Testing movement
 $ ros2 topic pub -r 10 vector/cmd_vel geometry_msgs/Twist  '{linear:  {x: 0.1, y: 0.0, z: 0.0}, angular: {x: 0.0,y: 0.0,z: 0.0}}'
+
+
+#Dependencies
+$ sudo apt-get install ros-crystal-vision-opencv
+$ sudo apt-get install ros-crystal-cv-bridge
+
+
 
 
 <!-- ```console
