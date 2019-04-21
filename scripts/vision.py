@@ -9,7 +9,7 @@ from sensor_msgs.msg import Image
 from std_msgs.msg import Float32
 
 class Vision(Node):
-    def __init__(self, async_robot, proximity_publish_rate=30.0, image_publish_rate=25.0):
+    def __init__(self, async_robot, proximity_publish_rate=30.0, image_publish_rate=30.0):
         super().__init__('vision')
         self.async_robot = async_robot
 
