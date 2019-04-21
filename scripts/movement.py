@@ -5,7 +5,7 @@ import numpy as np
 import rclpy
 from rclpy.node import Node
 
-#required msgs
+#msgs
 from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
 
@@ -22,8 +22,7 @@ class Movement(Node):
 
         #odom pub
         self.odom_pub = self.create_publisher(Odometry, '/vector/odom')
-        odom_period = 1.0/odom_publish_rate
-        self.timer = self.create_timer(odom_period, self.odom_callback)
+        self.odom_timer = self.create_timer( 1.0/odom_publish_rate, self.odom_callback)
 
         #private members
         self.linear_velocity = 0.0
