@@ -9,6 +9,12 @@ from rclpy.node import Node
 from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
 
+#srv
+# # from vector_ros2.srv import LiftHeight
+# from example_interfaces.srv import AddTwoInts
+from vector_ros2_interfaces.srv import LiftHeight
+
+
 class Movement(Node):
     def __init__(self, async_robot, odom_publish_rate=30):
         super().__init__('movement')
@@ -24,9 +30,28 @@ class Movement(Node):
         self.odom_pub = self.create_publisher(Odometry, '/vector/odom')
         self.odom_timer = self.create_timer( 1.0/odom_publish_rate, self.odom_callback)
 
+        #lift height srv   
+        self.lift_height_srv = self.create_service(LiftHeight, '/vector/lift_height', self.lift_height_callback)
+
+        #head angle srv
+
+
         #private members
         self.linear_velocity = 0.0
         self.angular_velocity = 0.0
+        self.lift_height = 0.0
+
+
+    def lift_height_callback(self, request, response):
+        if (request.desired_height >= 0.0):
+            self.async_robot.behavior.set_lift_height(request.desired_height)
+            self.lift_height = request.desired_height
+        response.current_height = self.lift_height
+        self.get_logger().info('in srv callback')
+        
+        return response
+
+        
 
     def odom_callback(self):
         odom = Odometry()

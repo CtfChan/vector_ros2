@@ -12,7 +12,16 @@ $ ros2 topic pub -r 10 vector/cmd_vel geometry_msgs/Twist  '{linear:  {x: 0.1, y
 $ ros2 topic pub -r 10 vector/cmd_vel geometry_msgs/Twist  '{linear:  {x: 0.0, y: 0.0, z: 0.0}, angular: {x: 0.0,y: 0.0,z: 0.0}}'
 ```
 
+```console
+$ ros2 service call /vector/lift_height vector_ros2_interfaces/LiftHeight '{desired_height: 0.0}'
+```
+
+
 # Dependencies
+vector_ros2_interfaces
+
+
+
 ```console
 $ sudo apt-get install ros-crystal-vision-opencv
 $ sudo apt-get install ros-crystal-cv-bridge
