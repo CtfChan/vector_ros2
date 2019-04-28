@@ -14,6 +14,9 @@ $ ros2 topic pub -r 10 vector/cmd_vel geometry_msgs/Twist  '{linear:  {x: 0.0, y
 
 ```console
 $ ros2 service call /vector/lift_height vector_ros2_interfaces/LiftHeight '{desired_height: 0.0}'
+
+$ ros2 service call /vector/head_angle vector_ros2_interfaces/HeadAngle '{desired_angle: 11}'
+
 ```
 
 

@@ -1,4 +1,6 @@
 import anki_vector
+from anki_vector.behavior import MIN_HEAD_ANGLE, MAX_HEAD_ANGLE
+
 import time
 import numpy as np
 
@@ -10,9 +12,7 @@ from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
 
 #srv
-# # from vector_ros2.srv import LiftHeight
-# from example_interfaces.srv import AddTwoInts
-from vector_ros2_interfaces.srv import LiftHeight
+from vector_ros2_interfaces.srv import LiftHeight, HeadAngle
 
 
 class Movement(Node):
@@ -34,24 +34,35 @@ class Movement(Node):
         self.lift_height_srv = self.create_service(LiftHeight, '/vector/lift_height', self.lift_height_callback)
 
         #head angle srv
+        self.head_angle_srv = self.create_service(HeadAngle, '/vector/head_angle', self.head_angle_callback)
 
 
         #private members
         self.linear_velocity = 0.0
         self.angular_velocity = 0.0
         self.lift_height = 0.0
+        self.head_angle = anki_vector.util.degrees(35.0)
 
+    def head_angle_callback(self, request, response):
+        if (MIN_HEAD_ANGLE.degrees > request.desired_angle):
+            self.head_angle = MIN_HEAD_ANGLE
+        elif (MAX_HEAD_ANGLE.degrees < request.desired_angle):
+            self.head_angle = MAX_HEAD_ANGLE
+        else:
+            self.head_angle = anki_vector.util.degrees(request.desired_angle)
+        self.async_robot.behavior.set_head_angle(self.head_angle)
+
+        response.current_angle = self.head_angle.degrees
+        return response
 
     def lift_height_callback(self, request, response):
         if (request.desired_height >= 0.0):
             self.async_robot.behavior.set_lift_height(request.desired_height)
             self.lift_height = request.desired_height
-        response.current_height = self.lift_height
-        self.get_logger().info('in srv callback')
         
+        response.current_height = self.lift_height
         return response
 
-        
 
     def odom_callback(self):
         odom = Odometry()
@@ -74,7 +85,6 @@ class Movement(Node):
 
 
     def cmd_vel_callback(self, msg):
-        self.get_logger().info('Got a cmd_vel msg')
         axle_length = 0.055 #5.5cm
         cmd_lin_vel = msg.linear.x
         cmd_ang_vel = msg.angular.z
