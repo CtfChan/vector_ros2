@@ -8,7 +8,7 @@ setup(
     packages=[],
     py_modules=[],
     install_requires=['setuptools'],
-    author='Esteve Fernandez',
+    author='Chris Chan',
     author_email='esteve@osrfoundation.org',
     maintainer='Esteve Fernandez',
     maintainer_email='esteve@osrfoundation.org',
@@ -25,7 +25,8 @@ setup(
     entry_points={
         'console_scripts': [
             'vision = scripts.vision:main',
-            'movement = scripts.movement:main'
+            'movement = scripts.movement:main',
+            'mopper = scripts.mopper:main'
         ],
     },
 )

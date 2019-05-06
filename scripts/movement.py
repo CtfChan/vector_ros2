@@ -6,6 +6,8 @@ import numpy as np
 
 import rclpy
 from rclpy.node import Node
+from rclpy.time import Time
+
 
 #msgs
 from geometry_msgs.msg import Twist
@@ -35,7 +37,6 @@ class Movement(Node):
 
         #head angle srv
         self.head_angle_srv = self.create_service(HeadAngle, '/vector/head_angle', self.head_angle_callback)
-
 
         #private members
         self.linear_velocity = 0.0

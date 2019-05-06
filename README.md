@@ -1,9 +1,17 @@
 # ROS2 Driver for Anki Vector 
-This driver has only been tested on Ubuntu 18.04. This is still a work in progress.
+This driver has only been tested on Ubuntu 18.04. I wrote this so that I could use Vector to mop my floor.
 
 1. Setup Anki Vector for the SDK as in the documentation.
 2. Clone this repo
-3. Have fun
+3. Have fun with the mopper node
+
+# Setup
+'''console
+$ mkdir -p ~/ros2_ws/src && cd ~/ros2_ws/src
+$ git clone https://github.com/CtfChan/vector_ros2.git
+
+'''
+
 
 
 # Testing movement
@@ -14,11 +22,9 @@ $ ros2 topic pub -r 10 vector/cmd_vel geometry_msgs/Twist  '{linear:  {x: 0.0, y
 
 ```console
 $ ros2 service call /vector/lift_height vector_ros2_interfaces/LiftHeight '{desired_height: 0.0}'
-
 $ ros2 service call /vector/head_angle vector_ros2_interfaces/HeadAngle '{desired_angle: 11}'
 
 ```
-
 
 # Dependencies
 vector_ros2_interfaces
