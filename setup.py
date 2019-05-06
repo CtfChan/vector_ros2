@@ -9,9 +9,9 @@ setup(
     py_modules=[],
     install_requires=['setuptools'],
     author='Chris Chan',
-    author_email='esteve@osrfoundation.org',
-    maintainer='Esteve Fernandez',
-    maintainer_email='esteve@osrfoundation.org',
+    author_email='xxx@xxx.org',
+    maintainer='xxx xxx',
+    maintainer_email='xxx@xxx.org',
     keywords=['ROS'],
     classifiers=[
         'Intended Audience :: Developers',
@@ -19,7 +19,7 @@ setup(
         'Programming Language :: Python',
         'Topic :: Software Development',
     ],
-    description='Package containing examples of how to use the rclpy API.',
+    description='Package for Anki Vector.',
     license='Apache License, Version 2.0',
     test_suite='test',
     entry_points={
