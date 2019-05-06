@@ -1,11 +1,9 @@
 # ROS2 Driver for Anki Vector 
-This driver has only been tested on Ubuntu 18.04. I wrote this so that I could use Vector to mop my floor and try out ROS2.
+This driver has only been tested on Ubuntu 18.04. I wrote this so that I could use Vector to mop my floor and try out ROS2. Just tape a piece of tissue to his arm and you're good to go.
+
 1. Setup Anki Vector for the SDK as in the documentation.
 2. Clone this repo
 3. Have fun with the mopper node
-
-# Video
-
 
 # Dependencies
 vector_ros2_interfaces
